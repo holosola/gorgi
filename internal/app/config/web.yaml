@@ -1,0 +1,16 @@
+app:
+  log:
+    path: .
+    prefix: gorgi
+mysql: 
+  username: root
+  password: asdasqwe123
+  host: 127.0.0.1
+  port: 3306111
+  db: test
+  charset: utf8mb4
+  max_open_connection: 100
+  max_idle_connection: 10
+redis:
+  host: 127.0.0.1
+  password: asdasa124124
