@@ -9,7 +9,7 @@ import (
 )
 
 func Start() error {
-	engine := gin.Default()
+	engine := gin.New()
 	log.InitLog()
 	router.Init(engine)
 

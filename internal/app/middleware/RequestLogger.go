@@ -25,13 +25,16 @@ func (w CustomResponseWriter) WriteString(s string) (int, error) {
 
 func RequestLogger() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		start := time.Now().Nanosecond()
+		start := time.Now()
 		reqData, _ := ctx.GetRawData()
-		cus := &CustomResponseWriter{body: bytes.NewBufferString(""), ResponseWriter: ctx.Writer}
-		ctx.Writer = cus
+		cw := &CustomResponseWriter{body: bytes.NewBufferString(""), ResponseWriter: ctx.Writer}
+		ctx.Writer = cw
 		ctx.Next()
-		ctx.Writer.Status()
-		rep := cus.body.String()
-		slog.Info("RequestLogger", slog.String("req:", string(reqData)), slog.Int("cost", time.Now().Nanosecond()-start), slog.String("resp", rep), slog.String("requestId", ctx.GetString("requestId")))
+		slog.Info("RequestLogger",
+			slog.Group("request", slog.String("URL", ctx.Request.URL.String()), slog.String("rawData", string(reqData))),
+			slog.Group("response", slog.Int("status", ctx.Writer.Status()), slog.String("data", cw.body.String())),
+			slog.Duration("executionTime", time.Since(start)),
+			slog.String("requestId", ctx.GetString("requestId")),
+		)
 	}
 }

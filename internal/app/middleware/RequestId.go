@@ -7,6 +7,10 @@ import (
 
 func RequestId() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		ctx.Set("requestId", uuid.New().String())
+		reqId := ctx.GetHeader("X-Request-ID")
+		if reqId == "" {
+			reqId = uuid.New().String()
+		}
+		ctx.Set("requestId", reqId)
 	}
 }
