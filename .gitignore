@@ -17,3 +17,4 @@
 .vscode
 configs/*.yaml
 internal/app/config/*.yaml
+*.log

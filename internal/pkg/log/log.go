@@ -14,7 +14,7 @@ func InitLog() {
 	path := conf.GetString("app.log.path")
 	prefix := conf.GetString("app.log.prefix")
 	logFile := path + "/" + prefix + time.Now().Format("20060102") + ".log"
-	f, err := os.OpenFile(logFile, os.O_CREATE|os.O_APPEND, 0700)
+	f, err := os.OpenFile(logFile, os.O_CREATE|os.O_WRONLY|os.O_APPEND, os.FileMode(0640))
 	if err != nil {
 		ex.Handle(err)
 	}

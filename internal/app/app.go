@@ -2,6 +2,7 @@ package app
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/holosola/gorgi/internal/app/router"
@@ -14,13 +15,13 @@ func Start() error {
 	router.Init(engine)
 
 	s := &http.Server{
-		Addr:              "127.0.0.1:8080",
+		Addr:              ":8080",
 		Handler:           engine,
-		ReadTimeout:       10,
-		ReadHeaderTimeout: 10,
-		WriteTimeout:      10,
-		IdleTimeout:       10,
-		MaxHeaderBytes:    1 << 20,
+		ReadTimeout:       time.Second * 60,
+		ReadHeaderTimeout: time.Second * 10,
+		WriteTimeout:      time.Second * 60,
+		IdleTimeout:       time.Second * 120,
+		MaxHeaderBytes:    40960,
 	}
 	return s.ListenAndServe()
 }

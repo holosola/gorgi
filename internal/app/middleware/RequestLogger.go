@@ -31,10 +31,13 @@ func RequestLogger() gin.HandlerFunc {
 		ctx.Writer = cw
 		ctx.Next()
 		slog.Info("RequestLogger",
-			slog.Group("request", slog.String("URL", ctx.Request.URL.String()), slog.String("rawData", string(reqData))),
-			slog.Group("response", slog.Int("status", ctx.Writer.Status()), slog.String("data", cw.body.String())),
-			slog.Duration("executionTime", time.Since(start)),
-			slog.String("requestId", ctx.GetString("requestId")),
+			slog.Group("request",
+				slog.String("URL", ctx.Request.URL.String()),
+				slog.String("rawData", string(reqData))),
+			slog.Group("response",
+				slog.Int("status", ctx.Writer.Status()),
+				slog.String("data", cw.body.String())),
+			slog.Duration("duration", time.Since(start)),
 		)
 	}
 }
