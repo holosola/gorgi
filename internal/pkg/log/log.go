@@ -1,6 +1,7 @@
 package log
 
 import (
+	"context"
 	"os"
 	"time"
 
@@ -9,7 +10,9 @@ import (
 	"golang.org/x/exp/slog"
 )
 
-func InitLog() {
+var logger *slog.Logger
+
+func init() {
 	conf := config.GetConfig()
 	path := conf.GetString("app.log.path")
 	prefix := conf.GetString("app.log.prefix")
@@ -19,7 +22,7 @@ func InitLog() {
 		ex.Handle(err)
 	}
 
-	myLog := slog.New(
+	logger = slog.New(
 		slog.HandlerOptions{
 			Level:     slog.LevelInfo,
 			AddSource: true,
@@ -30,5 +33,62 @@ func InitLog() {
 				return a
 			},
 		}.NewJSONHandler(f))
-	slog.SetDefault(myLog)
+	SetDefault(logger)
+}
+
+func Clone() *slog.Logger {
+	cp := *logger
+	return &cp
+}
+
+func SetDefault(l *slog.Logger) {
+	slog.SetDefault(l)
+}
+
+func With(args ...any) *slog.Logger {
+	cp := Clone()
+	return cp.With(args...)
+}
+
+func Debug(msg string, args ...any) {
+	slog.Debug(msg, args...)
+}
+
+func DebugCtx(ctx context.Context, msg string, args ...any) {
+	slog.DebugCtx(ctx, msg, args...)
+}
+
+func Info(msg string, args ...any) {
+	slog.Info(msg, args...)
+}
+
+func InfoCtx(ctx context.Context, msg string, args ...any) {
+	slog.InfoCtx(ctx, msg, args...)
+}
+
+func Warn(msg string, args ...any) {
+	//do sth
+	slog.Warn(msg, args...)
+}
+
+func WarnCtx(ctx context.Context, msg string, args ...any) {
+	//do sth
+	slog.WarnCtx(ctx, msg, args...)
+}
+
+func Error(msg string, args ...any) {
+	//do sth
+	slog.Error(msg, args...)
+}
+func ErrorCtx(ctx context.Context, msg string, args ...any) {
+	//do sth
+	slog.ErrorCtx(ctx, msg, args...)
+}
+
+func Log(ctx context.Context, level slog.Level, msg string, args ...any) {
+	slog.Log(ctx, level, msg, args...)
+}
+
+func LogAttrs(ctx context.Context, level slog.Level, msg string, attrs ...slog.Attr) {
+	slog.LogAttrs(ctx, level, msg, attrs...)
 }

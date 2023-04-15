@@ -9,14 +9,14 @@ import (
 
 func Init(r *gin.Engine) {
 	r.NoRoute(func(ctx *gin.Context) {
-		ctx.JSON(http.StatusNotFound, "")
+		ctx.JSON(http.StatusNotFound, "{}")
 	})
 
 	r.NoMethod(func(ctx *gin.Context) {
-		ctx.JSON(http.StatusNotFound, "")
+		ctx.JSON(http.StatusNotFound, "{}")
 	})
-	r.Use(middleware.RequestId())
-	r.Use(middleware.RequestLogger())
+	r.Use(middleware.TraceRequest())
+	r.Use(middleware.LogRequest())
 	RegisterInternal(r)
 	RegisterAPIRouters(r)
 }

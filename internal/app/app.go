@@ -6,12 +6,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/holosola/gorgi/internal/app/router"
-	"github.com/holosola/gorgi/internal/pkg/log"
 )
 
 func Start() error {
 	engine := gin.New()
-	log.InitLog()
 	router.Init(engine)
 
 	s := &http.Server{
