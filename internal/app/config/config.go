@@ -17,6 +17,7 @@ func init() {
 	if err != nil {
 		ex.Handle(err)
 	}
+	appConf.AutomaticEnv()
 	// 监控配置文件变化
 	appConf.WatchConfig()
 }
