@@ -39,6 +39,7 @@ func LogRequest() gin.HandlerFunc {
 			slog.Group("Request",
 				slog.String("URL", ctx.Request.URL.String()),
 				slog.String("Headers", requestHeaders),
+				slog.String("ClientIP", ctx.ClientIP()),
 				slog.String("Body", string(reqData))),
 			slog.Group("Response",
 				slog.Int("Status", ctx.Writer.Status()),
