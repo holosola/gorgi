@@ -4,9 +4,10 @@ import (
 	"bytes"
 	"time"
 
+	"log/slog"
+
 	"github.com/bytedance/sonic"
 	"github.com/gin-gonic/gin"
-	"golang.org/x/exp/slog"
 )
 
 type CustomResponseWriter struct {
@@ -35,7 +36,7 @@ func LogRequest() gin.HandlerFunc {
 		requestHeaders, _ := sonic.MarshalString(ctx.Request.Header)
 		responseHeadrs, _ := sonic.MarshalString(cw.Header())
 
-		slog.Info("log request and response",
+		slog.Info("log req&resp",
 			slog.Group("Request",
 				slog.String("URL", ctx.Request.URL.String()),
 				slog.String("Headers", requestHeaders),
