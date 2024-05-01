@@ -3,10 +3,10 @@ package account
 import (
 	"net/http"
 
+	"log/slog"
+
 	"github.com/gin-gonic/gin"
 	"github.com/holosola/gorgi/internal/app/config"
-	"github.com/holosola/gorgi/internal/pkg/log"
-	"golang.org/x/exp/slog"
 )
 
 type Resp struct {
@@ -17,11 +17,11 @@ type Resp struct {
 
 func Hello(c *gin.Context) {
 	conf := config.GetConfig()
-	log.Info("account Hello Function", slog.String("date", "2023-04-30"), slog.Int("conf int", conf.GetInt("mysql.port")))
+	slog.Info("account Hello Function", slog.String("date", "2023-04-30"), slog.Int("conf int", conf.GetInt("mysql.port")))
 	rs := Resp{
 		Code: conf.GetInt("mysql.port"),
 		Msg:  conf.GetString("redis.password"),
-		Data: map[string]any{"ping": "pong"},
+		Data: map[string]any{"ping": "pong", "query": c.Query("aaa")},
 	}
 	c.JSON(http.StatusOK, rs)
 }

@@ -1,8 +1,8 @@
 package ex
 
-import "golang.org/x/exp/slog"
+import "log"
 
 func Handle(err error) {
-	slog.Error("app got error", slog.String("error msg", err.Error()))
+	log.Fatalf("app got error: %s", err.Error())
 	panic(err)
 }
