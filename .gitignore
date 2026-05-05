@@ -1,20 +1,26 @@
-# Binaries for programs and plugins
+# 二进制
 *.exe
 *.exe~
 *.dll
 *.so
 *.dylib
+bin/
 
-# Test binary, built with `go test -c`
+# 测试 / 覆盖率
 *.test
-
-# Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+coverage.txt
 
-# Dependency directories (remove the comment below to include it)
-# vendor/
-#
-.vscode
-configs/*.yaml
-internal/app/config/*.yaml
+# 日志
+logs/
 *.log
+
+# 真实配置（仅保留 .example）
+configs/config.yaml
+
+# IDE / 编辑器
+.vscode/
+.idea/
+
+# OS
+.DS_Store

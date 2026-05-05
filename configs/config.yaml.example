@@ -1,0 +1,75 @@
+# gorgi 配置示例。复制为 config.yaml 后按需修改。
+# 真实的 config.yaml 不会进入版本管理（参见 .gitignore）。
+
+app:
+  name: gorgi
+  env: dev                       # dev / prod
+  http:
+    addr: ":8080"
+    read_timeout: 60s
+    write_timeout: 60s
+    idle_timeout: 120s
+
+log:
+  level: info                    # debug / info / warn / error
+  format: json                   # 当前仅支持 json
+  output: stdout                 # stdout / file
+  file_path: ./logs/gorgi.log    # output=file 时生效
+  add_source: false              # 是否在日志中带上调用位置
+  mask_fields:                   # 命中以下名字的字段会被脱敏（大小写不敏感）
+    - password
+    - token
+    - id_card
+    - phone
+    - app_secret
+
+mysql:
+  dsn: "root:pass@tcp(127.0.0.1:3306)/gorgi?charset=utf8mb4&parseTime=True&loc=Local"
+  max_open_conns: 100
+  max_idle_conns: 10
+  conn_max_lifetime: 1h
+
+redis:
+  addr: 127.0.0.1:6379
+  password: ""
+  db: 0
+  pool_size: 50
+
+middleware:
+  cors:
+    allow_origins: ["*"]
+    allow_methods: [GET, POST, PUT, DELETE, OPTIONS]
+    allow_headers:
+      - Origin
+      - Content-Type
+      - Authorization
+      - X-Api-Version
+      - X-Request-ID
+      - X-App-Key
+      - X-Sign
+      - X-Timestamp
+      - X-Nonce
+  ratelimit:
+    enabled: true
+    rate: 100                    # 每个 IP 每秒补充的令牌数
+    burst: 200                   # 桶容量
+  sign:
+    enabled: true
+    timestamp_skew: 5m           # 客户端时间戳允许的偏差
+    apps:
+      - app_key: "demo-app"
+        app_secret: "demo-secret"
+
+breaker:
+  default:
+    max_requests: 5              # 半开状态下允许的请求数
+    interval: 60s                # 计数窗口
+    timeout: 30s                 # 熔断打开持续时间
+    consecutive_failures: 5      # 连续失败多少次后打开熔断
+  rules: {}                      # 可按 name 覆盖默认规则，如 mysql.user: { ... }
+
+otel:
+  enabled: false                 # 默认关闭，开启时按 exporter 上报
+  service_name: gorgi
+  exporter: stdout               # stdout / otlp_grpc / otlp_http
+  sample_ratio: 1.0              # [0,1] 采样率

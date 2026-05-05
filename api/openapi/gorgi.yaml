@@ -1,0 +1,31 @@
+openapi: 3.0.3
+info:
+  title: gorgi API
+  version: 0.1.0
+  description: |
+    新增接口时，请在本文件追加对应路径定义，PR 评审会校验。
+servers:
+  - url: http://localhost:8080
+paths:
+  /api/user/{id}:
+    get:
+      summary: 获取用户信息（基础版）
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: x-api-version
+          in: header
+          required: false
+          schema:
+            type: string
+            example: v1
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
